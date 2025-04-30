@@ -8,37 +8,12 @@ import (
 	"os"
 )
 
-type AppDetails struct {
-	AppId    int    `json:"id"`
-	Name     string `json:"name"`
-	Slug     string `json:"slug"`
-	ClientId string `json:"client_id"`
-}
-
-type AppInstallation struct {
-	Id              int    `json:"id"`
-	TargetId        int    `json:"target_id"`
-	TargetType      string `json:"target_type"`
-	AccessTokensUrl string `json:"access_tokens_url"`
-	Account         struct {
-		Id    int    `json:"id"`
-		Login string `json:"login"`
-		Type  string `json:"type"`
-	} `json:"account"`
-}
-
-type AppToken struct {
-	Token       string            `json:"token"`
-	ExpiresAt   string            `json:"expires_at"`
-	Permissions map[string]string `json:"permissions"`
-}
-
 func main() {
 	ctx := context.Background()
 	token := os.Getenv("GH_TOKEN")
 	client := github.NewGitHubClient(token)
 
-	var appDetails AppDetails
+	var appDetails github.AppDetails
 	if err := client.Get(ctx, "apps/four-wards-public", &appDetails); err != nil {
 		log.Fatalf("Error fetching app details: %v", err)
 	}
@@ -60,7 +35,7 @@ func main() {
 	log.Printf("Generated JWT: %s", jwtToken)
 
 	appClient := github.NewGitHubClient(jwtToken)
-	var appInstallations []AppInstallation
+	var appInstallations []github.AppInstallation
 	if err := appClient.Get(ctx, "app/installations", &appInstallations); err != nil {
 		log.Fatalf("Error fetching app details: %v", err)
 	}
@@ -73,7 +48,7 @@ func main() {
 
 	installationId := appInstallations[0].Id
 	log.Printf("Installation Id: %d", installationId)
-	var appToken AppToken
+	var appToken github.AppToken
 	if err := appClient.Post(ctx, fmt.Sprintf("app/installations/%d/access_tokens", installationId), &appToken); err != nil {
 		log.Fatalf("Error generating app token: %v", err)
 	}
