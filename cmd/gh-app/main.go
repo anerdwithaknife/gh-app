@@ -14,7 +14,6 @@ type AppDetails struct {
 	Name     string `json:"name"`
 	Slug     string `json:"slug"`
 	ClientID string `json:"client_id"`
-	// Add other fields as needed
 }
 
 type GitHubClient struct {
