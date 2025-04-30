@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"gh-app/internal/jwt"
 	"log"
 	"net/http"
 	"os"
@@ -60,6 +61,17 @@ func (gh *GitHubClient) Get(ctx context.Context, uri string, result interface{})
 	return nil
 }
 
+func (gh *GitHubClient) GetPrivateKey(privateKeyFile string) (string, error) {
+	if privateKeyFile == "" {
+		return "", fmt.Errorf("private key file is not set")
+	}
+	privateKey, err := os.ReadFile(privateKeyFile)
+	if err != nil {
+		return "", fmt.Errorf("error reading private key file: %w", err)
+	}
+	return string(privateKey), nil
+}
+
 func main() {
 	ctx := context.Background()
 	token := os.Getenv("GH_TOKEN")
@@ -74,4 +86,15 @@ func main() {
 	log.Printf("App Name: %s", appDetails.Name)
 	log.Printf("App Slug: %s", appDetails.Slug)
 	log.Printf("Client ID: %s", appDetails.ClientID)
+
+	privateKey, err := client.GetPrivateKey(os.Getenv("GH_APP_PRIVATE_KEY_FILE"))
+	if err != nil {
+		log.Fatalf("Get private key file: %v", err)
+	}
+
+	jwtToken, err := jwt.GenerateGithubAppJWT(appDetails.AppId, privateKey)
+	if err != nil {
+		log.Fatalf("Error generating JWT: %v", err)
+	}
+	log.Printf("Generated JWT: %s", jwtToken)
 }
