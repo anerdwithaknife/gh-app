@@ -23,3 +23,12 @@ go.work.sum
 
 # env file
 .env
+
+# pem certificates (github app private keys)
+*.pem
+
+# sqlite3 database
+*.db
+
+# binary
+gh-app
