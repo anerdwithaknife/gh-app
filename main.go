@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"log"
+	"net/url"
 	"os"
 
 	"github.com/google/go-github/v71/github"
@@ -21,17 +22,16 @@ func main() {
 	tc := oauth2.NewClient(ctx, ts)
 
 	client := github.NewClient(tc)
-	/*
-		var err error
-		client.BaseURL, err = url.Parse("http://localhost:8080/")
-		if err != nil {
-			log.Fatalf("Error parsing base URL: %v", err)
-		}
-	*/
-	user, _, err := client.Users.Get(ctx, "octocat")
+	var err error
+	client.BaseURL, err = url.Parse("http://localhost:8080/")
 	if err != nil {
-		log.Fatalf("Error fetching user: %v", err)
+		log.Fatalf("Error parsing base URL: %v", err)
 	}
 
-	log.Printf("User: %s", *user.Login)
+	data, _, err := client.Apps.Get(ctx, "four-wards")
+	if err != nil {
+		log.Fatalf("Error fetching data: %v", err)
+	}
+
+	log.Printf("%v", data)
 }
