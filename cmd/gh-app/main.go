@@ -20,6 +20,11 @@ type AppInstallation struct {
 	TargetId        int    `json:"target_id"`
 	TargetType      string `json:"target_type"`
 	AccessTokensUrl string `json:"access_tokens_url"`
+	Account         struct {
+		Id    int    `json:"id"`
+		Login string `json:"login"`
+		Type  string `json:"type"`
+	} `json:"account"`
 }
 
 type AppToken struct {
@@ -34,7 +39,7 @@ func main() {
 	client := github.NewGitHubClient(token)
 
 	var appDetails AppDetails
-	if err := client.Get(ctx, "apps/four-wards", &appDetails); err != nil {
+	if err := client.Get(ctx, "apps/four-wards-public", &appDetails); err != nil {
 		log.Fatalf("Error fetching app details: %v", err)
 	}
 
@@ -65,6 +70,7 @@ func main() {
 	if len(appInstallations) == 0 {
 		log.Fatalf("No installations found for the app")
 	}
+
 	installationId := appInstallations[0].Id
 	log.Printf("Installation Id: %d", installationId)
 	var appToken AppToken
