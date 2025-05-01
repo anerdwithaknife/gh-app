@@ -3,12 +3,13 @@ Extension for gh cli to simplify handling of GitHub apps
 
 ## Features
 
-- App model
-- Configuration/data store
-- Streamline environment variables/db path
-- Fetch & save app information to db
-- Use specific app from db
-- Store all installations
+- [x] Fetch app details
+- [x] Save app to database (sqlite)
+- [x] List apps
+- [x] List installations
+- [x] Generate app JWT
+- [ ] Generate installation token
+- [ ] Customizable db path
 
 ## Environment
 
