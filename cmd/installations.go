@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"gh-app/internal/lab"
+	"gh-app/internal/store"
 
 	"github.com/spf13/cobra"
 )
@@ -29,6 +30,10 @@ to quickly create a Cobra application.`,
 		fmt.Printf("Showing installations for app with slug: %s\n", slug)
 
 		lab.GetAppInstallations(slug)
+
+		app := store.App{
+			Slug: slug,
+		}
 	},
 }
 
