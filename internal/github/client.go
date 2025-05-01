@@ -82,7 +82,7 @@ func (gh *GitHubClient) Post(ctx context.Context, uri string, result interface{}
 
 func (gh *GitHubClient) GetPrivateKey(privateKeyFile string) (string, error) {
 	if privateKeyFile == "" {
-		return "", fmt.Errorf("private key file is not set")
+		return "", fmt.Errorf("private key file is not set (GH_APP_PRIVATE_KEY_FILE)")
 	}
 	privateKey, err := os.ReadFile(privateKeyFile)
 	if err != nil {
