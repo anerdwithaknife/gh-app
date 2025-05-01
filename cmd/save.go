@@ -11,7 +11,7 @@ import (
 
 var saveCmd = &cobra.Command{
 	Use:   "save",
-	Short: "Show all save for a given app",
+	Short: "Save a GitHub app to the local database",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
