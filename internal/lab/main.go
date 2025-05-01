@@ -1,4 +1,4 @@
-package main
+package lab
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func main() {
+func TestGithubApi() {
 	ctx := context.Background()
 	token := os.Getenv("GH_TOKEN")
 	client := github.NewGitHubClient(token)
