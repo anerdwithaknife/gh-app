@@ -1,6 +1,6 @@
 package main
 
-import "gh-app/cmd"
+import "github.com/cursethevulgar/gh-app/cmd"
 
 func main() {
 	cmd.Execute()

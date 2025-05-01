@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"gh-app/internal/github"
-	"gh-app/internal/store"
+	"github.com/cursethevulgar/gh-app/internal/github"
+	"github.com/cursethevulgar/gh-app/internal/store"
 	"log"
 
 	"github.com/fatih/color"

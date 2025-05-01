@@ -1,4 +1,4 @@
-module gh-app
+module github.com/cursethevulgar/gh-app
 
 go 1.24.1
 

@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 
-	"gh-app/internal/github"
-	"gh-app/internal/store"
+	"github.com/cursethevulgar/gh-app/internal/github"
+	"github.com/cursethevulgar/gh-app/internal/store"
 
 	"github.com/spf13/cobra"
 )
@@ -12,11 +12,9 @@ import (
 var saveCmd = &cobra.Command{
 	Use:   "save",
 	Short: "Save a GitHub app to the local database",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Long: `Saves a GitHub app with the specified slug to the local database.
 
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+If no app id is specified, the app details are fetched from GitHub API using GH_TOKEN.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		db := store.Store{}
 		if err := db.Init(); err != nil {
@@ -26,22 +24,34 @@ to quickly create a Cobra application.`,
 
 		slug, _ := cmd.Flags().GetString("slug")
 		if slug == "" {
-			fmt.Println("Slug must not be empty")
+			cmd.Println("Slug must not be empty")
 			return
 		}
 
-		fmt.Printf("Fetching details for app with slug: %s\n", slug)
+		appDetails := &github.AppDetails{}
+		
 
-		appDetails, err := github.GetAppDetails(slug)
-		if err != nil {
-			fmt.Println("Error getting app details:", err)
-			return
+		appId, _ := cmd.Flags().GetInt("app-id")
+		cmd.Printf("App ID: %d\n", appId)
+		if appId != 0 {
+			appDetails.AppId = appId
+			appDetails.Slug = slug
+			appDetails.Name = slug
+		} else {
+			cmd.Printf("Fetching details for app with slug: %s\n", slug)
+
+			var err error
+			appDetails, err = github.GetAppDetails(slug)
+			if err != nil {
+				cmd.Println("Error getting app details:", err)
+				return
+			}
 		}
 
 		privateKeyPath, _ := cmd.Flags().GetString("private-key")
 		privateKey, err := github.GetPrivateKey(privateKeyPath)
 		if err != nil {
-			fmt.Println("Private key error:", err)
+			cmd.Println("Private key error:", err)
 			return
 		}
 
@@ -54,11 +64,11 @@ to quickly create a Cobra application.`,
 		}
 
 		if err := db.SaveApp(&app); err != nil {
-			fmt.Println("Error storing app:", err)
+			cmd.Println("Error storing app:", err)
 			return
 		}
 
-		fmt.Printf("App %s saved to local database\n", slug)
+		cmd.Printf("App %s saved to local database\n", slug)
 	},
 }
 
@@ -67,6 +77,8 @@ func init() {
 
 	saveCmd.Flags().StringP("slug", "s", "", "The slug of the app to show save for")
 	saveCmd.Flags().StringP("private-key", "p", "", "Path to private key (*.pem) of the app")
+	saveCmd.Flags().IntP("app-id", "a", 0, "When specifying the app id, no details are fetched from GitHub")
 
 	saveCmd.MarkFlagRequired("slug")
+	saveCmd.MarkFlagRequired("private-key")
 }

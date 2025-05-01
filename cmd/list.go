@@ -3,7 +3,7 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 
-	"gh-app/internal/store"
+	"github.com/cursethevulgar/gh-app/internal/store"
 
 	"github.com/fatih/color"
 	"github.com/rodaine/table"

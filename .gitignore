@@ -29,3 +29,6 @@ go.work.sum
 
 # sqlite3 database
 *.db
+
+# binary
+gh-app

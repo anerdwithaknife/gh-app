@@ -27,10 +27,10 @@ func (s *Store) Init() error {
 
 	_, err = s.db.Exec(`
 	CREATE TABLE IF NOT EXISTS apps (
-		name TEXT NOT NULL,
+		name TEXT,
 		slug TEXT NOT NULL PRIMARY KEY,
 		app_id INTEGER NOT NULL,
-		client_id TEXT NOT NULL,
+		client_id TEXT,
 		private_key TEXT
 	);
 	`)
