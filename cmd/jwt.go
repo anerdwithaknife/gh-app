@@ -12,7 +12,7 @@ import (
 var jwtCmd = &cobra.Command{
 	Use:   "jwt",
 	Short: "Generate JWT for GitHub App",
-	Long: `Generates a signed JWT token using APP_ID and APP_PRIVATE_KEY from environment.
+	Long: `Generates a signed JWT token for the specified saved app.
 
 The token can be used for calling the GitHub API /app endpoints.`,
 	Run: func(cmd *cobra.Command, args []string) {
