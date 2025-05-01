@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"gh-app/internal/lab"
+	"gh-app/internal/github"
 	"gh-app/internal/store"
 
 	"github.com/spf13/cobra"
@@ -26,20 +26,20 @@ to quickly create a Cobra application.`,
 
 		slug, _ := cmd.Flags().GetString("slug")
 		if slug == "" {
-			fmt.Println("Slug is required")
+			fmt.Println("Slug must not be empty")
 			return
 		}
 
-		fmt.Printf("Showing save for app with slug: %s\n", slug)
+		fmt.Printf("Fetching details for app with slug: %s\n", slug)
 
-		appDetails, err := lab.GetAppDetails(slug)
+		appDetails, err := github.GetAppDetails(slug)
 		if err != nil {
 			fmt.Println("Error getting app details:", err)
 			return
 		}
 
 		privateKeyPath, _ := cmd.Flags().GetString("private-key")
-		privateKey, err := lab.GetPrivateKey(privateKeyPath)
+		privateKey, err := github.GetPrivateKey(privateKeyPath)
 		if err != nil {
 			fmt.Println("Private key error:", err)
 			return
@@ -67,5 +67,6 @@ func init() {
 
 	saveCmd.Flags().StringP("slug", "s", "", "The slug of the app to show save for")
 	saveCmd.Flags().StringP("private-key", "p", "", "Path to private key (*.pem) of the app")
+
 	saveCmd.MarkFlagRequired("slug")
 }

@@ -1,9 +1,8 @@
-package lab
+package github
 
 import (
 	"context"
 	"fmt"
-	"gh-app/internal/github"
 	"log"
 	"os"
 )
@@ -11,9 +10,9 @@ import (
 func TestGithubApi() {
 	ctx := context.Background()
 	token := os.Getenv("GH_TOKEN")
-	client := github.NewGitHubClient(token)
+	client := NewGitHubClient(token)
 
-	var appDetails github.AppDetails
+	var appDetails AppDetails
 	if err := client.Get(ctx, "apps/four-wards-public", &appDetails); err != nil {
 		log.Fatalf("Error fetching app details: %v", err)
 	}
@@ -28,14 +27,14 @@ func TestGithubApi() {
 		log.Fatalf("Get private key file: %v", err)
 	}
 
-	jwtToken, err := github.GenerateGithubAppJWT(appDetails.AppId, privateKey)
+	jwtToken, err := GenerateGithubAppJWT(appDetails.AppId, privateKey)
 	if err != nil {
 		log.Fatalf("Error generating JWT: %v", err)
 	}
 	log.Printf("Generated JWT: %s", jwtToken)
 
-	appClient := github.NewGitHubClient(jwtToken)
-	var appInstallations []github.AppInstallation
+	appClient := NewGitHubClient(jwtToken)
+	var appInstallations []AppInstallation
 	if err := appClient.Get(ctx, "app/installations", &appInstallations); err != nil {
 		log.Fatalf("Error fetching app details: %v", err)
 	}
@@ -48,7 +47,7 @@ func TestGithubApi() {
 
 	installationId := appInstallations[0].Id
 	log.Printf("Installation Id: %d", installationId)
-	var appToken github.AppToken
+	var appToken AppToken
 	if err := appClient.Post(ctx, fmt.Sprintf("app/installations/%d/access_tokens", installationId), &appToken); err != nil {
 		log.Fatalf("Error generating app token: %v", err)
 	}
@@ -57,12 +56,12 @@ func TestGithubApi() {
 	log.Printf("App Token Permissions: %+v", appToken.Permissions)
 }
 
-func GetAppDetails(slug string) (*github.AppDetails, error) {
+func GetAppDetails(slug string) (*AppDetails, error) {
 	ctx := context.Background()
 	token := os.Getenv("GH_TOKEN")
-	client := github.NewGitHubClient(token)
+	client := NewGitHubClient(token)
 
-	var appDetails github.AppDetails
+	var appDetails AppDetails
 	if err := client.Get(ctx, fmt.Sprintf("apps/%s", slug), &appDetails); err != nil {
 		return nil, err
 	}

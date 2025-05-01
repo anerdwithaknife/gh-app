@@ -1,7 +1,10 @@
 package cmd
 
 import (
-	"gh-app/internal/lab"
+	"fmt"
+	"gh-app/internal/github"
+	"gh-app/internal/store"
+	"log"
 
 	"github.com/spf13/cobra"
 )
@@ -13,10 +16,34 @@ var jwtCmd = &cobra.Command{
 
 The token can be used for calling the GitHub API /app endpoints.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		lab.TestGithubApi()
+		db := store.Store{}
+		if err := db.Init(); err != nil {
+			log.Println("Error initializing store:", err)
+			return
+		}
+		slug, _ := cmd.Flags().GetString("slug")
+		if slug == "" {
+			log.Println("Slug must not be empty")
+			return
+		}
+
+		app, err := db.GetAppBySlug(slug)
+		if err != nil {
+			log.Println("Error getting app details:", err)
+			return
+		}
+
+		jwtToken, err := github.GenerateGithubAppJWT(app.AppID, app.PrivateKey)
+		if err != nil {
+			log.Fatalf("Error generating JWT: %v", err)
+		}
+		fmt.Println(jwtToken)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(jwtCmd)
+
+	jwtCmd.Flags().StringP("slug", "s", "", "The slug of the app to show save for")
+	jwtCmd.MarkFlagRequired("slug")
 }
