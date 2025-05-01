@@ -23,7 +23,7 @@ func TestGithubApi() {
 	log.Printf("App Slug: %s", appDetails.Slug)
 	log.Printf("Client Id: %s", appDetails.ClientId)
 
-	privateKey, err := client.GetPrivateKey(os.Getenv("GH_APP_PRIVATE_KEY_FILE"))
+	privateKey, err := GetPrivateKey(os.Getenv("GH_APP_PRIVATE_KEY_FILE"))
 	if err != nil {
 		log.Fatalf("Get private key file: %v", err)
 	}
@@ -57,18 +57,26 @@ func TestGithubApi() {
 	log.Printf("App Token Permissions: %+v", appToken.Permissions)
 }
 
-func GetAppInstallations(slug string) {
+func GetAppDetails(slug string) (*github.AppDetails, error) {
 	ctx := context.Background()
 	token := os.Getenv("GH_TOKEN")
 	client := github.NewGitHubClient(token)
 
 	var appDetails github.AppDetails
 	if err := client.Get(ctx, fmt.Sprintf("apps/%s", slug), &appDetails); err != nil {
-		log.Fatalf("Error fetching app details: %v", err)
+		return nil, err
 	}
 
-	log.Printf("App Id: %d", appDetails.AppId)
-	log.Printf("App Name: %s", appDetails.Name)
-	log.Printf("App Slug: %s", appDetails.Slug)
-	log.Printf("Client Id: %s", appDetails.ClientId)
+	return &appDetails, nil
+}
+
+func GetPrivateKey(privateKeyFile string) (string, error) {
+	if privateKeyFile == "" {
+		return "", fmt.Errorf("path to private key file must not be empty")
+	}
+	privateKey, err := os.ReadFile(privateKeyFile)
+	if err != nil {
+		return "", fmt.Errorf("error reading private key file: %w", err)
+	}
+	return string(privateKey), nil
 }

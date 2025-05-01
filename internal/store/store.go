@@ -1,6 +1,10 @@
 package store
 
-import "database/sql"
+import (
+	"database/sql"
+
+	_ "github.com/mattn/go-sqlite3"
+)
 
 type App struct {
 	Name       string
@@ -16,7 +20,7 @@ type Store struct {
 
 func (s *Store) Init() error {
 	var err error
-	s.db, err = sql.Open("sqlite3", "file:store.db?cache=shared&mode=rwc")
+	s.db, err = sql.Open("sqlite3", "./store.db")
 	if err != nil {
 		return err
 	}
@@ -46,7 +50,7 @@ func (s *Store) GetAppBySlug(slug string) (*App, error) {
 	return app, nil
 }
 
-func (s *Store) StoreApp(app *App) error {
+func (s *Store) SaveApp(app *App) error {
 	_, err :=
 		s.db.Exec("INSERT OR REPLACE INTO apps (name, slug, app_id, client_id, private_key) VALUES (?, ?, ?, ?, ?)",
 			app.Name, app.Slug, app.AppID, app.ClientID, app.PrivateKey)
