@@ -4,9 +4,11 @@ import (
 	"github.com/spf13/cobra"
 
 	"gh-app/internal/store"
+
+	"github.com/fatih/color"
+	"github.com/rodaine/table"
 )
 
-// listCmd represents the list command
 var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List all saved apps",
@@ -24,12 +26,24 @@ var listCmd = &cobra.Command{
 			return
 		}
 
-		for _, app := range apps {
-			cmd.Printf("%d\t%s\n", app.AppID, app.Slug)
-		}
+		drawAppTable(apps)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(listCmd)
+}
+
+func drawAppTable(apps []*store.App) {
+	headerFmt := color.New(color.FgGreen, color.Underline).SprintfFunc()
+	columnFmt := color.New(color.FgYellow).SprintfFunc()
+
+	tbl := table.New("App ID", "Slug", "Client ID")
+	tbl.WithHeaderFormatter(headerFmt).WithFirstColumnFormatter(columnFmt)
+
+	for _, app := range apps {
+		tbl.AddRow(app.AppID, app.Slug, app.ClientID)
+	}
+
+	tbl.Print()
 }
