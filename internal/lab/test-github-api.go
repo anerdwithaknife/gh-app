@@ -56,3 +56,19 @@ func TestGithubApi() {
 	log.Printf("App Token Expires At: %s", appToken.ExpiresAt)
 	log.Printf("App Token Permissions: %+v", appToken.Permissions)
 }
+
+func GetAppInstallations(slug string) {
+	ctx := context.Background()
+	token := os.Getenv("GH_TOKEN")
+	client := github.NewGitHubClient(token)
+
+	var appDetails github.AppDetails
+	if err := client.Get(ctx, fmt.Sprintf("apps/%s", slug), &appDetails); err != nil {
+		log.Fatalf("Error fetching app details: %v", err)
+	}
+
+	log.Printf("App Id: %d", appDetails.AppId)
+	log.Printf("App Name: %s", appDetails.Name)
+	log.Printf("App Slug: %s", appDetails.Slug)
+	log.Printf("Client Id: %s", appDetails.ClientId)
+}

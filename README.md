@@ -37,6 +37,8 @@ Installations
     AppId           int
 ```
 
+Apps.Installations = Installations[]
+
 ## Usage
 
 `gh app store <app slug>` (fetching + manual mode)
