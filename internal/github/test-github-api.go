@@ -79,3 +79,15 @@ func GetPrivateKey(privateKeyFile string) (string, error) {
 	}
 	return string(privateKey), nil
 }
+
+func GetAppInstallations(jwtToken string, appId int) ([]AppInstallation, error) {
+	ctx := context.Background()
+	client := NewGitHubClient(jwtToken)
+
+	var appInstallations []AppInstallation
+	if err := client.Get(ctx, "app/installations", &appInstallations); err != nil {
+		return nil, fmt.Errorf("error fetching app installations: %w", err)
+	}
+
+	return appInstallations, nil
+}
