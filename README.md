@@ -11,43 +11,15 @@ Extension for gh cli to simplify handling of GitHub apps
 - [ ] Generate installation token
 - [ ] Customizable db path
 
-## Environment
-
-`GH_APP_ID` should contain the GitHub app id (not client id)
-
-`GH_APP_PRIVATE_KEY` should contain the full contents of the pem file
-
-
-## Tables
-
-```
-Apps
-    Name        string
-    Slug        string
-    AppId       int
-    ClientId    string
-    PrivateKey  string
-```
-
-```
-Installations
-    Id              int
-    TargetId        int
-    TargetType      string
-    AccountName     string
-    AppId           int
-```
-
-Apps.Installations = Installations[]
-
 ## Usage
 
-`gh app store <app slug>` (fetching + manual mode)
+`gh app list`
 
-`gh app jwt <app slug|app id|client id>`
+`gh app save -s <app slug> -p <private key path>`
 
-`gh app installations <app slug>`
+`gh app jwt -s <app slug>`
 
-`gh app token <installation id|app slug+org>`
+`gh app installations -s <app slug>`
 
-`gh app oauth <installation id|app slug+org>` (render links/callback)
+`gh app token -s <app slug>`
+
