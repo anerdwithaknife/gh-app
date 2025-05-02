@@ -8,7 +8,7 @@ Extension for gh cli to simplify handling of GitHub apps
 - [x] List apps
 - [x] List installations
 - [x] Generate app JWT
-- [ ] Generate installation token
+- [x] Generate access token from installation
 - [ ] Customizable db path
 
 ## Usage
@@ -21,5 +21,5 @@ Extension for gh cli to simplify handling of GitHub apps
 
 `gh app installations -s <app slug>`
 
-`gh app token -s <app slug>`
+`gh app token -s <app slug> -i <installation id>`
 

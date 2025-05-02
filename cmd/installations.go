@@ -1,9 +1,10 @@
 package cmd
 
 import (
+	"log"
+
 	"github.com/cursethevulgar/gh-app/internal/github"
 	"github.com/cursethevulgar/gh-app/internal/store"
-	"log"
 
 	"github.com/fatih/color"
 	"github.com/rodaine/table"
@@ -26,13 +27,13 @@ to quickly create a Cobra application.`,
 		}
 		slug, _ := cmd.Flags().GetString("slug")
 		if slug == "" {
-			log.Println("Slug must not be empty")
+			log.Fatal("Slug must not be empty")
 			return
 		}
 
 		app, err := db.GetAppBySlug(slug)
 		if err != nil {
-			log.Println("Error getting app details:", err)
+			log.Fatalf("Error getting app details: %v", err)
 			return
 		}
 
