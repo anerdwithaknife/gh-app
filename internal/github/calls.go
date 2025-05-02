@@ -41,3 +41,15 @@ func GetAppInstallations(jwtToken string, appId int) ([]AppInstallation, error) 
 
 	return appInstallations, nil
 }
+
+func GenerateAccessToken(jwtToken string, appId int, installationId string) (string, error) {
+	ctx := context.Background()
+	client := NewGitHubClient(jwtToken)
+
+	var appToken AppToken
+	if err := client.Post(ctx, fmt.Sprintf("app/installations/%s/access_tokens", installationId), &appToken); err != nil {
+		return "", fmt.Errorf("error generating app token: %w", err)
+	}
+
+	return appToken.Token, nil
+}

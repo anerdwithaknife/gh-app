@@ -10,9 +10,10 @@ import (
 )
 
 var listCmd = &cobra.Command{
-	Use:   "list",
-	Short: "List all saved apps",
-	Long:  `Displays a list of all GitHub apps saved to the local data store.`,
+	Use:     "list",
+	Short:   "List all saved apps",
+	Long:    `Displays a list of all GitHub apps saved to the local data store.`,
+	Aliases: []string{"ls"},
 	Run: func(cmd *cobra.Command, args []string) {
 		db := store.Store{}
 		if err := db.Init(); err != nil {
