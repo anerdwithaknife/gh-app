@@ -20,4 +20,22 @@ func Execute() {
 }
 
 func init() {
+	commonTemplate := `
+{{with (or .Long .Short)}}{{. | trimTrailingWhitespaces}}
+{{end}}
+USAGE
+  {{.UseLine}}{{if .HasAvailableSubCommands}}
+  {{.CommandPath}} [command]{{end}}
+
+{{if .HasAvailableSubCommands}}COMMANDS
+{{range .Commands}}{{if (or .IsAvailableCommand (eq .Name "help"))}}  {{rpad .Name .NamePadding }} {{.Short}}
+{{end}}{{end}}
+{{end}}{{if .HasAvailableLocalFlags}}FLAGS
+{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}
+{{end}}{{if .HasAvailableInheritedFlags}}GLOBAL FLAGS
+{{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}
+{{end}}
+`
+	rootCmd.SetUsageTemplate(commonTemplate)
+	rootCmd.SetHelpTemplate(commonTemplate)
 }
