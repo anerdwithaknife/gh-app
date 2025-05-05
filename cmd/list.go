@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"log"
+
 	"github.com/spf13/cobra"
 
 	"github.com/cursethevulgar/gh-app/internal/store"
@@ -15,9 +17,9 @@ var listCmd = &cobra.Command{
 	Long:    `Displays a list of all GitHub apps saved to the local data store.`,
 	Aliases: []string{"ls"},
 	Run: func(cmd *cobra.Command, args []string) {
-		db := store.NewDefaultStore()
-		if err := db.Init(); err != nil {
-			cmd.Println("Error initializing store:", err)
+		db, err := store.NewDefaultStore()
+		if err != nil {
+			log.Println("Error loading store:", err)
 			return
 		}
 
