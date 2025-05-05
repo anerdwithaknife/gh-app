@@ -1,9 +1,10 @@
 package cmd
 
 import (
+	"log"
+
 	"github.com/cursethevulgar/gh-app/internal/github"
 	"github.com/cursethevulgar/gh-app/internal/store"
-	"log"
 
 	"github.com/spf13/cobra"
 )
@@ -15,7 +16,7 @@ var jwtCmd = &cobra.Command{
 
 The token can be used for calling the GitHub API /app endpoints.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		db := store.Store{}
+		db := store.NewDefaultStore()
 		if err := db.Init(); err != nil {
 			log.Println("Error initializing store:", err)
 			return

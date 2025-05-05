@@ -16,7 +16,7 @@ var saveCmd = &cobra.Command{
 
 If no app id is specified, the app details are fetched from GitHub API using GH_TOKEN.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		db := store.Store{}
+		db := store.NewDefaultStore()
 		if err := db.Init(); err != nil {
 			fmt.Println("Error initializing store:", err)
 			return
@@ -29,7 +29,6 @@ If no app id is specified, the app details are fetched from GitHub API using GH_
 		}
 
 		appDetails := &github.AppDetails{}
-		
 
 		appId, _ := cmd.Flags().GetInt("app-id")
 		cmd.Printf("App ID: %d\n", appId)
