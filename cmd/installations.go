@@ -14,11 +14,9 @@ import (
 var installationsCmd = &cobra.Command{
 	Use:   "installations",
 	Short: "Show all installations for a given app",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Long: `Shows all the installations for a given app.
+	
+The installation id can be used to generate an access token for the app.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		db, err := store.NewDefaultStore()
 		if err != nil {
