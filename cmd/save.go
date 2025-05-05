@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/cursethevulgar/gh-app/internal/github"
 	"github.com/cursethevulgar/gh-app/internal/store"
@@ -16,9 +16,9 @@ var saveCmd = &cobra.Command{
 
 If no app id is specified, the app details are fetched from GitHub API using GH_TOKEN.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		db := store.NewDefaultStore()
-		if err := db.Init(); err != nil {
-			fmt.Println("Error initializing store:", err)
+		db, err := store.NewDefaultStore()
+		if err != nil {
+			log.Println("Error loading store:", err)
 			return
 		}
 
