@@ -15,7 +15,7 @@ var listCmd = &cobra.Command{
 	Long:    `Displays a list of all GitHub apps saved to the local data store.`,
 	Aliases: []string{"ls"},
 	Run: func(cmd *cobra.Command, args []string) {
-		db := store.Store{}
+		db := store.NewDefaultStore()
 		if err := db.Init(); err != nil {
 			cmd.Println("Error initializing store:", err)
 			return
