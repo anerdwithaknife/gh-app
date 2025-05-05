@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/cursethevulgar/gh-app/internal/github"
@@ -37,7 +38,7 @@ The token can be used for calling the GitHub API /app endpoints.`,
 		if err != nil {
 			log.Fatalf("Error generating JWT: %v", err)
 		}
-		cmd.Println(jwtToken)
+		fmt.Println(jwtToken)
 	},
 }
 

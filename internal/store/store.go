@@ -29,10 +29,6 @@ func NewDefaultStore() (StoreInterface, error) {
 		storePath = os.Getenv("HOME") + "/.gh-app.yaml"
 	}
 
-	if _, err := os.Stat(storePath); os.IsNotExist(err) {
-		return nil, fmt.Errorf("store path error: %w", err)
-	}
-
 	db := NewYAMLStore(storePath)
 	if err := db.Init(); err != nil {
 		return nil, fmt.Errorf("error initializing store: %w", err)

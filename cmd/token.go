@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/cursethevulgar/gh-app/internal/github"
@@ -47,7 +48,7 @@ to see available installation ids for a given app slug.`,
 			log.Fatalf("Error generating access token: %v", err)
 		}
 
-		cmd.Println(accessToken)
+		fmt.Println(accessToken)
 	},
 }
 
