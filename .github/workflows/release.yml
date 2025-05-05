@@ -17,5 +17,3 @@ jobs:
         with:
           generate_attestations: false
           go_version_file: go.mod
-        env:
-          CGO_ENABLED: 1
