@@ -17,7 +17,7 @@ var jwtCmd = &cobra.Command{
 
 The token can be used for calling the GitHub API /app endpoints.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		db, err := store.NewDefaultStore()
+		db, err := store.NewDefaultStore(false)
 		if err != nil {
 			log.Println("Error loading store:", err)
 			return
