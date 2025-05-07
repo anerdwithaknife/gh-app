@@ -18,7 +18,7 @@ var installationsCmd = &cobra.Command{
 	
 The installation id can be used to generate an access token for the app.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		db, err := store.NewDefaultStore()
+		db, err := store.NewDefaultStore(false)
 		if err != nil {
 			log.Println("Error loading store:", err)
 			return

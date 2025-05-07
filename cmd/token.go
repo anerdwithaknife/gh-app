@@ -17,7 +17,7 @@ var tokenCmd = &cobra.Command{
 Requires an app slug and an installation id, use gh app installations 
 to see available installation ids for a given app slug.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		db, err := store.NewDefaultStore()
+		db, err := store.NewDefaultStore(false)
 		if err != nil {
 			log.Fatalf("Error loading store: %v", err)
 			return

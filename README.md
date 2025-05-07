@@ -30,3 +30,11 @@ gh extension install github.com/cursethevulgar/gh-app
 
 `gh app token -s <app slug> -i <installation id>`
 
+### Stored app credentials
+
+> [!CAUTION]
+> All information (including the private key) is saved in a plain text yaml file and should be treated with the same care as the original PEM files.
+
+The default path is `~/.gh-app.yaml` which can be overridden via the `GH_APP_STORE_PATH` environment variable. 
+
+When setting the path via environment variable, the full path including the desired filename must be used, i.e. `GH_APP_STORE_PATH=~/.config/gh/gh-app.yaml` (file can have any name).
