@@ -3,10 +3,8 @@ module github.com/cursethevulgar/gh-app
 go 1.24.1
 
 require (
-	github.com/cvilsmeier/sqinn-go v1.2.0
 	github.com/fatih/color v1.18.0
 	github.com/golang-jwt/jwt/v5 v5.2.2
-	github.com/mattn/go-sqlite3 v1.14.28
 	github.com/rodaine/table v1.3.0
 	github.com/spf13/cobra v1.9.1
 	gopkg.in/yaml.v3 v3.0.1
