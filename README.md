@@ -15,7 +15,7 @@ gh-app is a GitHub CLI extension that simplifies managing GitHub Apps by providi
 Use `gh extension install` to install this extension: 
 
 ```shell
-gh extension install github.com/cursethevulgar/gh-app
+gh extension install github.com/anerdwithaknife/gh-app
 ```
 
 ## Stored app credentials

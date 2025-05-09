@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/cursethevulgar/gh-app/internal/store"
+	"github.com/anerdwithaknife/gh-app/internal/store"
 
 	"github.com/fatih/color"
 	"github.com/rodaine/table"

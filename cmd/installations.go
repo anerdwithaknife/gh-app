@@ -3,8 +3,8 @@ package cmd
 import (
 	"log"
 
-	"github.com/cursethevulgar/gh-app/internal/github"
-	"github.com/cursethevulgar/gh-app/internal/store"
+	"github.com/anerdwithaknife/gh-app/internal/github"
+	"github.com/anerdwithaknife/gh-app/internal/store"
 
 	"github.com/fatih/color"
 	"github.com/rodaine/table"
