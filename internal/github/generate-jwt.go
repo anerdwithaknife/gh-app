@@ -14,9 +14,9 @@ func GenerateGithubAppJWT(appId int, privateKey string) (string, error) {
 	}
 
 	claims := jwt.MapClaims{
-		"iat": time.Now().Unix(),                       // Issued at: current time
-		"exp": time.Now().Add(10 * time.Minute).Unix(), // Expiry: 10 minutes from iat
-		"iss": appId,                                   // GitHub App ID
+		"iat": time.Now().Unix(),
+		"exp": time.Now().Add(10 * time.Minute).Unix(),
+		"iss": appId,
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)

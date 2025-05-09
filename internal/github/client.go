@@ -4,38 +4,64 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
+	"io"
 	"net/http"
+
+	"github.com/cli/go-gh"
 )
 
+type customClient struct {
+	*http.Client
+	token string
+}
+
+func (c *customClient) Request(method string, path string, body io.Reader) (*http.Response, error) {
+	req, err := http.NewRequest(method, "https://api.github.com/"+path, body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Authorization", "Bearer "+c.token)
+	req.Header.Set("Accept", "application/vnd.github+json")
+
+	return c.Do(req)
+}
+
 type GitHubClient struct {
-	BaseURL string
-	Token   string
-	Client  *http.Client
+	restClient interface {
+		Request(method string, path string, body io.Reader) (*http.Response, error)
+	}
 }
 
 func NewGitHubClient(token string) *GitHubClient {
-	if token == "" {
-		log.Fatalf("token is not set (use GH_TOKEN env)")
+	var restClient interface {
+		Request(method string, path string, body io.Reader) (*http.Response, error)
 	}
+
+	if token == "" {
+		ghClient, err := gh.RESTClient(nil)
+		if err != nil {
+			return nil
+		}
+		restClient = ghClient
+	} else {
+		restClient = &customClient{
+			Client: http.DefaultClient,
+			token:  token,
+		}
+	}
+
 	return &GitHubClient{
-		BaseURL: "https://api.github.com/",
-		Token:   token,
-		Client:  &http.Client{},
+		restClient: restClient,
 	}
 }
 
 func (gh *GitHubClient) Get(ctx context.Context, uri string, result interface{}) error {
-	apiURL := gh.BaseURL + uri
-	req, err := http.NewRequestWithContext(ctx, "GET", apiURL, nil)
-	if err != nil {
-		return fmt.Errorf("error creating request: %w", err)
+	if gh == nil || gh.restClient == nil {
+		return fmt.Errorf("client not properly initialized")
 	}
 
-	req.Header.Set("Authorization", "Bearer "+gh.Token)
-	req.Header.Set("Accept", "application/vnd.github+json")
-
-	resp, err := gh.Client.Do(req)
+	resp, err := gh.restClient.Request("GET", uri, nil)
 	if err != nil {
 		return fmt.Errorf("error making request: %w", err)
 	}
@@ -53,16 +79,11 @@ func (gh *GitHubClient) Get(ctx context.Context, uri string, result interface{})
 }
 
 func (gh *GitHubClient) Post(ctx context.Context, uri string, result interface{}) error {
-	apiURL := gh.BaseURL + uri
-	req, err := http.NewRequestWithContext(ctx, "POST", apiURL, nil)
-	if err != nil {
-		return fmt.Errorf("error creating request: %w", err)
+	if gh == nil || gh.restClient == nil {
+		return fmt.Errorf("client not properly initialized")
 	}
 
-	req.Header.Set("Authorization", "Bearer "+gh.Token)
-	req.Header.Set("Accept", "application/vnd.github+json")
-
-	resp, err := gh.Client.Do(req)
+	resp, err := gh.restClient.Request("POST", uri, nil)
 	if err != nil {
 		return fmt.Errorf("error making request: %w", err)
 	}
