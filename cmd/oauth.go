@@ -8,7 +8,9 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"os/exec"
 	"os/signal"
+	"runtime"
 	"strings"
 	"time"
 
@@ -122,6 +124,10 @@ This command will:
 		boxPrint(authURL)
 		cmd.Println("")
 
+		if err := openBrowser(authURL); err != nil {
+			log.Printf("Error opening browser: %v", err)
+		}
+
 		interrupt := make(chan os.Signal, 1)
 		signal.Notify(interrupt, os.Interrupt)
 
@@ -169,4 +175,27 @@ func drawTokenTable(accessToken string, refreshToken string) {
 	tbl.AddRow("Refresh Token", refreshToken)
 
 	tbl.Print()
+}
+
+// openBrowser opens the specified URL in the default browser of the user's system
+func openBrowser(url string) error {
+	var cmd string
+	var args []string
+
+	browser := os.Getenv("BROWSER")
+	if browser != "" {
+		cmd = browser
+	} else {
+		switch runtime.GOOS {
+		case "windows":
+			cmd = "cmd"
+			args = []string{"/c", "start"}
+		case "darwin":
+			cmd = "open"
+		default:
+			cmd = "xdg-open"
+		}
+	}
+	args = append(args, url)
+	return exec.Command(cmd, args...).Start()
 }
