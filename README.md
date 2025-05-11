@@ -6,8 +6,9 @@ gh-app is a GitHub CLI extension that simplifies managing GitHub Apps by providi
 
 - Fetch app details to save along private key
 - List installations for app
-- Generate app JWT using private key
+- Generate app JWT
 - Generate access token for app installation
+- Generate user token via OAuth flow
 - Customizable store path (defaults to `~/.gh-app.yaml`)
 
 ## Installation
@@ -50,3 +51,9 @@ When setting the path via environment variable, the full path including the desi
 `gh app token -s <app slug> -i <installation id>`
 
 `gh app token -s <app slug> -o <org name>`
+
+### Initiate OAuth flow
+
+`gh app oauth -s <app slug>`
+
+`gh app oauth -s <app slug> -p <port>`
