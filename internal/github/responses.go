@@ -1,10 +1,11 @@
 package github
 
 type AppDetails struct {
-	AppId    int    `json:"id"`
-	Name     string `json:"name"`
-	Slug     string `json:"slug"`
-	ClientId string `json:"client_id"`
+	AppId        int    `json:"id"`
+	Name         string `json:"name"`
+	Slug         string `json:"slug"`
+	ClientId     string `json:"client_id"`
+	ClientSecret string `json:"client_secret"`
 }
 
 type AppInstallation struct {

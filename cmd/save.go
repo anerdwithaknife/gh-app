@@ -22,13 +22,9 @@ If no app id is specified, the app details are fetched from GitHub API using GH_
 			return
 		}
 
-		slug, _ := cmd.Flags().GetString("slug")
-		if slug == "" {
-			cmd.Println("Slug must not be empty")
-			return
-		}
-
 		appDetails := &github.AppDetails{}
+
+		slug, _ := cmd.Flags().GetString("slug")
 
 		appId, _ := cmd.Flags().GetInt("app-id")
 		if appId != 0 {
