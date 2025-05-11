@@ -31,7 +31,6 @@ If no app id is specified, the app details are fetched from GitHub API using GH_
 		appDetails := &github.AppDetails{}
 
 		appId, _ := cmd.Flags().GetInt("app-id")
-		cmd.Printf("App ID: %d\n", appId)
 		if appId != 0 {
 			appDetails.AppId = appId
 			appDetails.Slug = slug
@@ -54,12 +53,15 @@ If no app id is specified, the app details are fetched from GitHub API using GH_
 			return
 		}
 
+		clientSecret, _ := cmd.Flags().GetString("client-secret")
+
 		app := store.App{
-			Slug:       slug,
-			Name:       appDetails.Name,
-			AppID:      appDetails.AppId,
-			ClientID:   appDetails.ClientId,
-			PrivateKey: privateKey,
+			Slug:         slug,
+			Name:         appDetails.Name,
+			AppID:        appDetails.AppId,
+			ClientID:     appDetails.ClientId,
+			ClientSecret: clientSecret,
+			PrivateKey:   privateKey,
 		}
 
 		if err := db.SaveApp(&app); err != nil {
@@ -67,7 +69,7 @@ If no app id is specified, the app details are fetched from GitHub API using GH_
 			return
 		}
 
-		cmd.Printf("App %s saved to local database\n", slug)
+		cmd.Printf("App %s saved to local yaml store\n", slug)
 	},
 }
 
@@ -76,8 +78,8 @@ func init() {
 
 	saveCmd.Flags().StringP("slug", "s", "", "The slug of the app to show save for")
 	saveCmd.Flags().StringP("private-key", "p", "", "Path to private key (*.pem) of the app")
+	saveCmd.Flags().StringP("client-secret", "e", "", "Client secret of the app")
 	saveCmd.Flags().IntP("app-id", "a", 0, "When specifying the app id, no details are fetched from GitHub")
 
 	saveCmd.MarkFlagRequired("slug")
-	saveCmd.MarkFlagRequired("private-key")
 }

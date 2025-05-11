@@ -6,11 +6,12 @@ import (
 )
 
 type App struct {
-	Name       string
-	Slug       string
-	AppID      int
-	ClientID   string
-	PrivateKey string
+	Name         string
+	Slug         string
+	AppID        int
+	ClientID     string
+	ClientSecret string
+	PrivateKey   string
 }
 
 type StoreInterface interface {
