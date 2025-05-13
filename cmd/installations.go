@@ -47,6 +47,7 @@ The installation id can be used to generate an access token for the app.`,
 		}
 
 		drawAppInstallationsTable(installations)
+		cmd.Println()
 	},
 }
 

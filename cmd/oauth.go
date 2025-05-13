@@ -105,7 +105,7 @@ This command will:
 				tokenData.AccessToken, tokenData.RefreshToken)
 
 			drawTokenTable(tokenData.AccessToken, tokenData.RefreshToken)
-			cmd.Println("")
+			cmd.Println()
 
 			tokenChan <- true
 		})

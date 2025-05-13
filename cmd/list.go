@@ -30,6 +30,7 @@ var listCmd = &cobra.Command{
 		}
 
 		drawAppTable(apps)
+		cmd.Println()
 	},
 }
 
