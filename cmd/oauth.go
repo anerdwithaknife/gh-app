@@ -37,6 +37,7 @@ This command will:
 	Run: func(cmd *cobra.Command, args []string) {
 		slug, _ := cmd.Flags().GetString("slug")
 		port, _ := cmd.Flags().GetInt("port")
+		route, _ := cmd.Flags().GetString("route")
 
 		db, err := store.NewDefaultStore(false)
 		if err != nil {
@@ -116,13 +117,15 @@ This command will:
 			}
 		}()
 
+		redirectURL := fmt.Sprintf("http://localhost:%d%s", port, route)
+
 		authURL := fmt.Sprintf(
-			"https://github.com/login/oauth/authorize?client_id=%s&redirect_uri=http://localhost:%d/api/auth/callback/github",
+			"https://github.com/login/oauth/authorize?client_id=%s&redirect_uri=%s",
 			clientId,
-			port,
+			redirectURL,
 		)
 		boxPrint(authURL)
-		cmd.Println("")
+		cmd.Println()
 
 		if err := openBrowser(authURL); err != nil {
 			log.Printf("Error opening browser: %v", err)
@@ -153,6 +156,7 @@ func init() {
 
 	oauthCmd.Flags().StringP("slug", "s", "", "Slug of the GitHub app")
 	oauthCmd.Flags().IntP("port", "p", 3000, "Localhost port to listen on for OAuth callback")
+	oauthCmd.Flags().StringP("route", "r", "/api/auth/callback/github", "Route to listen on for OAuth callback")
 
 	oauthCmd.MarkFlagRequired("slug")
 }
